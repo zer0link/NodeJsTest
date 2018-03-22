@@ -1,4 +1,4 @@
 module.exports = {
-    //url : 'mongodb://admin:admin@ds213229.mlab.com:13229/youarenotalone'
-    url: 'mongodb://localhost/alone'
+    url : 'mongodb://admin:admin@ds231568.mlab.com:31568/heroku_gd4hnr9m'
+    //url: 'mongodb://localhost/alone'
 }
