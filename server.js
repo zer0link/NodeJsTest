@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 MongoClient.connect(db.url, (err, database) => {
     if (err) return console.log(err);
     
-    let db1 = database.db("alone")
+    let db1 = database.db("heroku_gd4hnr9m")
     require('./app/routes')(app, db1);
 
     require('./app/routes')(app, {});
