@@ -1,7 +1,8 @@
 var ObjectID = require('mongodb').ObjectID;
+const { questionApi } = require('./question')
 const errorMessage = 'An error has occured';
 
-module.exports = function(app, db) {
+module.exports = (app, db) => {
   app.get('/notes/test', (req,res) => {
     const result = 'test';
     res.send(result);
@@ -54,4 +55,7 @@ module.exports = function(app, db) {
       }
     });
   });
+
+  questionApi(app, db)
+
 };
