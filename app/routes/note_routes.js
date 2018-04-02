@@ -1,5 +1,4 @@
 var ObjectID = require('mongodb').ObjectID;
-const { questionApi } = require('./question')
 const errorMessage = 'An error has occured';
 
 module.exports = (app, db) => {
@@ -55,7 +54,5 @@ module.exports = (app, db) => {
       }
     });
   });
-
-  questionApi(app, db)
 
 };
