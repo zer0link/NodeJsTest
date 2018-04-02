@@ -5,7 +5,7 @@ const db             = require('./config/db');
 
 const app            = express();
 
-const port = 8000;
+const port = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -16,7 +16,7 @@ MongoClient.connect(db.url, (err, database) => {
     require('./app/routes')(app, db1);
 
     require('./app/routes')(app, {});
-    app.listen('/', () => {
+    app.listen(port, () => {
     console.log('We are live on ' + port);
     });
 })
