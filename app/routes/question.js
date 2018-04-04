@@ -29,23 +29,13 @@ module.exports.questionApi = (app, db) => {
             res.send(result)
         })
         .catch((err) => {
-            console.log('err:' + err )
+            console.log('err1:' + err )
         })
       });
 
-      app.post('/question/:batchId', (req, res) => {
-          //console.log(req.body)
-          let arr = req.body.data
-          console.log(arr)
-          arr.foreach((x) => console.log(x))
-          
-        // post(db, req.body)
-        // .then((result) => {
-        //     res.send(result);
-        // })
-        // .catch((err) => {
-        //     console.log('err:' + err )
-        // })
+      app.post('/question/batch', (req, res) => {
+          let arr = req.body
+          arr.forEach((x) => post(db, x))
       });
 }
 

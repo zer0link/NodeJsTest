@@ -7,5 +7,5 @@ module.exports.find = (db, topic, query) => {
 }
 
 module.exports.post = (db, topic, entity) => {
-    return db.collection(topic).insert(entity)
+    return db.collection(topic).save(entity)
 }
