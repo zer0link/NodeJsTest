@@ -1,22 +1,15 @@
-const express        = require('express');
-const MongoClient    = require('mongodb').MongoClient;
-const bodyParser     = require('body-parser');
-const db             = require('./config/db');
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const app = express();
+const db = require('./config/db')
 
-const app            = express();
-
-const port = process.env.PORT || 8080;
-
+const port = process.env.PORT || 8000;
 app.use(bodyParser.json({ extended: true }));
 
-MongoClient.connect(db.url, (err, database) => {
-    if (err) return console.log(err);
-    
-    let db1 = database.db("heroku_gd4hnr9m")
-    require('./app/routes')(app, db1);
+mongoose.connect(db.url)
 
-    require('./app/routes')(app, {});
-    app.listen(port, () => {
+app.listen(port, () => {
+    require('./app/routes')(app)
     console.log('We are live on ' + port);
-    });
-})
+});

@@ -1,15 +1,27 @@
 'use strict';
-const {getAll,find, post} = require('./base')
+const Question = require('./../models/question')
 
-module.exports.getAll = (db) => {
-    return getAll(db, 'question')
+class QuestionController{
+    constructor(app){
+        this._app = app;
+    }
+
+    getAll(){
+        return Question.find({})
+    }
+
+    postAll(questions){
+        return questions.forEach(question => {
+            let data = Object.assign(new Question(), question)
+            data.save()
+        });
+    }
+
+    post(question){
+        let data = Object.assign(new Question(), question)
+        console.log(data)
+        return data.save()
+    }
 }
 
-module.exports.find = (db, query) => {
-    return find(db, 'question', query)
-}
-
-module.exports.post = (db, question) => {
-    const value = Object.assign({timeStamp : Date.now()},question)
-    return post(db, 'question', value)
-}
+module.exports = QuestionController
