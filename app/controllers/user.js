@@ -7,13 +7,21 @@ class UserController{
     }
 
     register(user){
-        let data = Object.assign(new User(), question)
-        return data.save()
+        User.findOne({email:user.email})
+        .then((existUser) => {
+            if(existUser){
+                let data = Object.assign(existUser, user)
+            }
+            else{
+                let data = Object.assign(new User(), user)
+            }
+            return data.save()
+        })
     }
 
     getUser(email){
         let user = new User(app)
-        return user.find({email})
+        return user.findOne({email})
     }
 
 }

@@ -8,18 +8,21 @@ class UserAnswerController{
         this._app = app;
     }
 
-    register(userQuestionAnswer){
-        let userAnswer = new UserAnswer()
-        userAnswer.Find({email:userQuestionAnswer.userEmail})
+    submit(userQuestionAnswer){
+        // let userAnswer = new UserAnswer()
+        return UserAnswer.findOne({userEmail:userQuestionAnswer.userEmail})
         .then((ua) => {
-            ua.answer.push({
+            if(!ua){
+                ua = new UserAnswer()
+                ua.userEmail = userQuestionAnswer.userEmail
+            }
+            ua.answers.push({
                 questionId: userQuestionAnswer.questionId,
                 answer: userQuestionAnswer.answer
             })
             return ua.save()
         })
 
-        return data.save()
     }
 
     getUser(email){
