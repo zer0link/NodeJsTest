@@ -3,7 +3,7 @@ const User = require('./../models/user');
 
 class UserController{
 
-    register(_user){
+    register(user){
         var saveUser;
         return User.findOne({email:user.email})
         .then((existUser) => {
