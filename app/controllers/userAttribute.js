@@ -17,10 +17,17 @@ class UserAnswerController {
                     ua = new UserAttribute();
                     ua.userEmail = userAttribute.userEmail;
                 }
-                ua.Attributes.push({
-                    attribute: userAttribute.attribute,
-                    rating: 5 + userAttribute.value
-                })
+
+                let uaIndex = ua.Attributes.findIndex((attribute) => attribute.attribute == userAttribute.attribute)
+                if(!uaIndex) {
+                    ua.Attributes[uaIndex].rating += userAttribute.value;
+                }else{
+                    ua.Attributes.push({
+                        attribute: userAttribute.attribute,
+                        rating: 5 + userAttribute.value
+                    })
+                }
+                
                 return ua.save();
             })
     }
