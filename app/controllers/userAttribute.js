@@ -6,15 +6,7 @@ class UserAnswerController {
     get(userEmail) {
         return UserAttribute.findOne({ userEmail })
             .then((ua) => {
-                if (!ua) {
-                    return Question.findOne()
-                        .then(question => {
-                            return question;
-                        })
-                }
-                else {
-                    throw "Attribute not found!";
-                }
+                return ua;
             })
     }
 
