@@ -1,7 +1,7 @@
 'use strict';
 const UserAttribute = require('./../models/userAttribute');
 
-class UserAnswerController {
+class UserAttributeController {
 
     get(userEmail) {
         return UserAttribute.findOne({ userEmail })
@@ -33,4 +33,4 @@ class UserAnswerController {
     }
 }
 
-module.exports = UserAnswerController;
+module.exports = UserAttributeController;
