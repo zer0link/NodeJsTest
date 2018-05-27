@@ -7,13 +7,21 @@ class UserAttributeController {
         return UserAttribute.findOne({ userEmail })
             .then((ua) => {
                 if (!ua || ua.Attributes.length === 0){
-                    throw 'No user attributes found';
+                    return 'No user attributes found';
                 }else{
-                    console.log(ua.Attributes[0].attribute);
+                    var elements = [];
+                    var elementCount = 0;
+                    (ua.Attributes).forEach(userAttribute => {
+                        let element = {"$elemMatch": {attribute: userAttribute.attribute, rating: userAttribute.rating}};
+                        elements.push(element);
+                        elementCount ++;
+                    });
+
                     const query = UserAttribute
                     .find({})
-                    .where('Attributes.attribute').equals(ua.Attributes[0].attribute)
-                    .where('userEmail').ne(userEmail);
+                    .where('userEmail').ne(userEmail)
+                    .where('Attributes').all(elements)
+                    .where('Attributes').size(elementCount);
 
                     return query.findOne(function (err, matchedUser){
                         if (err) {
