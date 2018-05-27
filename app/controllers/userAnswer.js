@@ -1,36 +1,39 @@
 'use strict';
 const UserAnswer = require('./../models/userAnswer');
 const Question = require('./../models/question');
-
+const q = require('q');
 
 class UserAnswerController{
 
     getNext(userEmail){
-        return UserAnswer.findOne({userEmail})
+        let deferred = q.defer();
+        UserAnswer.findOne({userEmail})
         .then((ua) => {
             if(!ua){
-                return Question.findOne()
+                Question.findOne()
                 .then(question => {
-                    return question;
+                    deferred.resolve(question);
                 })
             }
             else{
-                return Question.find()
+                Question.find()
                 .then((questions) => {
 
                     for (let index = 0; index < questions.length; index++) {
                         const question = questions[index];
                         if(!ua.answers.find(x => x.questionId == question._id)){
-                            return question;
+                            deferred.resolve(question);
                         }
                     } 
                 })
             }
         })
+        return deferred.promise;
     }
 
     submit(userQuestionAnswer){
-        return UserAnswer.findOne({userEmail:userQuestionAnswer.userEmail})
+        let deferred = q.defer();
+        UserAnswer.findOne({userEmail:userQuestionAnswer.userEmail})
         .then((ua) => {
             if(!ua){
                 ua = new UserAnswer();
@@ -40,8 +43,13 @@ class UserAnswerController{
                 questionId: userQuestionAnswer.questionId,
                 answer: userQuestionAnswer.answer
             })
-            return ua.save();
+            ua.save()
+            .then(ua => {
+                deferred.resolve(ua);
+            });
         })
+
+        return deferred.promise;
     }
 }
 

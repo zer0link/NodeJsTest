@@ -1,10 +1,12 @@
 'use strict';
 let UserAnswerController = require('./../controllers/userAnswer');
+let auth = require('./../auth/auth');
 
 module.exports.userAnswerApi = (app) => {
-    app.get('/useranswer/:email', (req, res) => {
+    app.get('/useranswer', auth.verifyToken, (req, res) => {
         let controller = new UserAnswerController();
-        controller.getNext(req.params.email)
+        console.log('req.user.email', req.user.email);
+        controller.getNext(req.user.email)
             .then((result) => {
                 res.send(result);
             })
@@ -13,7 +15,7 @@ module.exports.userAnswerApi = (app) => {
             })
     })
 
-    app.post('/useranswer', (req, res) => {
+    app.post('/useranswer', auth.verifyToken, (req, res) => {
         let controller = new UserAnswerController();
         controller.submit(req.body)
             .then((result) => {

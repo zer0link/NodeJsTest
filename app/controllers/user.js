@@ -1,20 +1,51 @@
 'use strict';
 const User = require('./../models/user');
+const q = require('q');
+const auth = require('../auth/auth')
 
 class UserController{
 
     register(user){
-        var saveUser;
-        return User.findOne({email:user.email})
-        .then((existUser) => {
+        let deferred = q.defer();
+        // var saveUser;
+        User.findOne({email:user.email})
+        .then(existUser => {
             if(existUser){
-                saveUser = Object.assign(existUser, user);
+                deferred.reject('User already exists');
             }
             else{
-                saveUser = Object.assign(new User(), user);
-            }
-            return saveUser.save();
+                let saveUser = Object.assign(new User(), user);
+                saveUser.save()
+                .then(saveUser => {
+                    let token = auth.sign(user);
+                    deferred.resolve({token});
+                });
+            }            
         })
+        return deferred.promise;
+    }
+
+    login(user){
+        let deferred = q.defer();
+        User.findOne({email: user.email})
+        .then(existingUser => {
+            if(existingUser){
+                if(existingUser.password === user.password){
+                    let token = auth.sign({
+                        name: existingUser.name,
+                        email: existingUser.email
+                    });
+                    deferred.resolve({token});
+                }
+                else{
+                    deferred.reject('Invalid password');    
+                }
+            }
+            else{
+                deferred.reject('Invalid user');
+            }
+        });
+        return deferred.promise;
     }
 
     getUser(email){

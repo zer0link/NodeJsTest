@@ -1,8 +1,9 @@
 'use strict';
 let UserAttributeController = require('./../controllers/userAttribute');
+let auth = require('./../auth/auth');
 
 module.exports.userAttributeApi = (app) => {
-    app.get('/userAttribute/:email', (req, res) => {
+    app.get('/userAttribute/:email', auth.verifyToken, (req, res) => {
         let controller = new UserAttributeController();
         controller.get(req.params.email)
             .then((result) => {
@@ -13,7 +14,7 @@ module.exports.userAttributeApi = (app) => {
             })
     })
 
-    app.post('/userAttribute', (req, res) => {
+    app.post('/userAttribute', auth.verifyToken, (req, res) => {
         let controller = new UserAttributeController();
         controller.submit(req.body)
             .then((result) => {
