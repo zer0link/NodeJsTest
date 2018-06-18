@@ -10,6 +10,9 @@ const static = (app) => {
     app.get('/docs/useranswer', (req, res) => {
         res.sendFile(path.join(__dirname + '/useranswer.html'));
     });
+    app.get('/docs/question', (req, res) => {
+        res.sendFile(path.join(__dirname + '/question.html'));
+    });
 
 }
 
